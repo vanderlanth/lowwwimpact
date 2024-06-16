@@ -1,0 +1,373 @@
+
+<IfModule mod_rewrite.c>
+
+# enable awesome urls. i.e.:
+Options +MultiViews
+RewriteEngine on
+
+# make sure to set the RewriteBase correctly
+# if you are running the site in a subfolder;
+# otherwise links or the entire site will break.
+#
+# If your homepage is http://yourdomain.com/mysite,
+# set the RewriteBase to:
+#
+# RewriteBase /
+
+# In some environments it's necessary to
+# set the RewriteBase to:
+#
+# RewriteBase /
+
+RewriteBase /
+
+# block files and folders beginning with a dot, such as .git
+# except for the .well-known folder, which is used for Let's Encrypt and security.txt
+RewriteRule (^|/)\.(?!well-known\/) index.php [L]
+
+# block text files in the content folder from being accessed directly
+RewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]
+
+# block all files in the site folder from being accessed directly
+# except for requests to plugin assets files
+RewriteRule ^site/(.*) index.php [L]
+
+# Enable authentication header
+# SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+
+# Merge multiple slashes in uri
+RewriteCond %{THE_REQUEST} ^[A-Z]+\ //*(.+)//+(.*)\ HTTP
+RewriteRule ^ /%1/%2 [R,L]
+RewriteCond %{THE_REQUEST} ^[A-Z]+\ //+(.*)\ HTTP
+RewriteRule ^ /%1 [R,L]
+
+
+# make site links work
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*) index.html [L]
+
+</IfModule>
+
+# <RequireAll>
+#     Require local
+# </RequireAll>
+
+
+# pass the Authorization header to PHP
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# Add correct content-type for fonts
+AddType application/vnd.ms-fontobject .eot
+AddType font/ttf .ttf
+AddType font/otf .otf
+AddType font/woff .woff
+AddType font/woff2 .woff2
+
+
+# compress text file responses
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE application/json
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+AddOutputFilterByType DEFLATE font/ttf font/otf font/woff font/woff2
+</IfModule>
+
+# BEGIN Expire headers
+<IfModule mod_expires.c>
+ExpiresActive On
+
+ExpiresDefault "access plus 7200 seconds"
+ExpiresByType image/jpg "access plus 2592000 seconds"
+ExpiresByType image/jpeg "access plus 2592000 seconds"
+ExpiresByType image/png "access plus 2592000 seconds"
+ExpiresByType image/webp "access plus 2592000 seconds"
+ExpiresByType image/avif "access plus 2592000 seconds"
+ExpiresByType image/gif "access plus 2592000 seconds"
+AddType image/x-icon .ico
+ExpiresByType image/ico "access plus 2592000 seconds"
+ExpiresByType image/icon "access plus 2592000 seconds"
+ExpiresByType image/x-icon "access plus 2592000 seconds"
+ExpiresByType text/css "access plus 2592000 seconds"
+ExpiresByType text/javascript "access plus 2592000 seconds"
+ExpiresByType text/html "access plus 7200 seconds"
+ExpiresByType application/xhtml+xml "access plus 7200 seconds"
+ExpiresByType application/javascript "access plus 2592000 seconds"
+ExpiresByType application/x-javascript "access plus 2592000 seconds"
+ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+
+ExpiresByType font/ttf "access plus 1 year"
+ExpiresByType font/otf "access plus 1 year"
+ExpiresByType font/woff "access plus 1 year"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+
+</IfModule>
+# END Expire headers
+
+# BEGIN Cache-Control Headers
+<IfModule mod_headers.c>
+<FilesMatch "\.(ico|jpe?g|png|webp|avif|gif|swf|css|gz)$">
+Header set Cache-Control "max-age=2592000, public"
+</FilesMatch>
+<FilesMatch "\.(js)$">
+Header set Cache-Control "max-age=2592000, private"
+</FilesMatch>
+<filesMatch "\.(html|htm)$">
+Header set Cache-Control "max-age=7200, public"
+</filesMatch>
+# Disable caching for scripts and other dynamic files
+<FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+Header unset Cache-Control
+</FilesMatch>
+</IfModule>
+# END Cache-Control Headers
+
+# KILL THEM ETAGS
+Header unset ETag
+FileETag none
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Checking for WebP browser support ..
+RewriteCond %{HTTP_ACCEPT} image/webp
+
+# .. and if there's a WebP version for the requested image
+RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
+
+# Well, then go for it & serve WebP instead
+RewriteRule (.+)\.(jpe?g|png)$ $1.webp [T=image/webp,E=accept:1]
+</IfModule>
+
+<IfModule mod_headers.c>
+Header append Vary Accept env=REDIRECT_accept
+</IfModule>
+
+<IfModule mod_mime.c>
+AddType image/webp .webp
+</IfModule>
+
+
+
+# ----------------------------------------------------------------------
+# | Forcing `https://`                                                 |
+# ----------------------------------------------------------------------
+
+# Redirect from the `http://` to the `https://` version of the URL.
+#
+# https://wiki.apache.org/httpd/RewriteHTTPToHTTPS
+
+# (1) If you're using cPanel AutoSSL or the Let's Encrypt webroot method it
+#     will fail to validate the certificate if validation requests are
+#     redirected to HTTPS. Turn on the condition(s) you need.
+#
+#     https://www.iana.org/assignments/well-known-uris/well-known-uris.xhtml
+#     https://tools.ietf.org/html/draft-ietf-acme-acme-12
+
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} off
+#   RewriteRule (.*) https://stats.lowwwimpact.com/$1 [R=301,L]
+# </IfModule>
+
+# AddHandler application/x-httpd-php5 .rss
+
+
+# ----------------------------------------------------------------------
+# | Suppressing the `www.` at the beginning of URLs                    |
+# ----------------------------------------------------------------------
+
+# Rewrite www.example.com → example.com
+
+# The same content should never be available under two different URLs,
+# especially not with and without `www.` at the beginning.
+# This can cause SEO problems (duplicate content), and therefore, you should
+# choose one of the alternatives and redirect the other one.
+#
+# (!) NEVER USE BOTH WWW-RELATED RULES AT THE SAME TIME!
+
+# (1) Set %{ENV:PROTO} variable, to allow rewrites to redirect with the
+#     appropriate schema automatically (http or https).
+#
+# (2) The rule assumes by default that both HTTP and HTTPS environments are
+#     available for redirection.
+#     If your SSL certificate could not handle one of the domains used during
+#     redirection, you should turn the condition on.
+#
+#     https://github.com/h5bp/server-configs-apache/issues/52
+
+<IfModule mod_rewrite.c>
+
+RewriteEngine On
+
+# (1)
+RewriteCond %{HTTPS} =on
+RewriteRule ^ - [E=PROTO:https]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ - [E=PROTO:http]
+
+# (2)
+# RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+# RewriteRule ^ %{ENV:PROTO}://%1%{REQUEST_URI} [R=301,L]
+
+
+</IfModule>
+
+
+
+
+SetEnvIfNoCase User-Agent .*Googlebot.* good_agent
+SetEnvIfNoCase User-Agent .*MSIE.* good_bot
+SetEnvIfNoCase User-Agent .*Safari mobile.* good_agent
+SetEnvIfNoCase User-Agent .*Safari.* good_agent
+SetEnvIfNoCase User-Agent .*Firefox.* good_agent
+SetEnvIfNoCase User-Agent .*Firefox (BonEcho).* good_agent
+SetEnvIfNoCase User-Agent .*Firefox (GranParadiso).* good_agent
+SetEnvIfNoCase User-Agent .*Firefox (Lorentz).* good_agent
+SetEnvIfNoCase User-Agent .*Firefox (Minefield).* good_agent
+SetEnvIfNoCase User-Agent .*Firefox (Namoroka).* good_agent
+SetEnvIfNoCase User-Agent .*Firefox (Shiretoko).* good_agent
+SetEnvIfNoCase User-Agent .*Firefox mobile.* good_agent
+SetEnvIfNoCase User-Agent .*DuckDuckGo Mobile.* good_agent
+SetEnvIfNoCase User-Agent .*Chrome Mobile.* good_agent
+SetEnvIfNoCase User-Agent .*Chrome.* good_agent
+SetEnvIfNoCase User-Agent .*Opera.* good_agent
+SetEnvIfNoCase User-Agent .*Opera Mini.* good_agent
+SetEnvIfNoCase User-Agent .*Opera Mobile.* good_agent
+SetEnvIfNoCase User-Agent .*Yahoo.* good_agent
+SetEnvIfNoCase User-Agent .*bingbot.* good_agent
+SetEnvIfNoCase User-Agent .*DuckDuckBot.* good_agent
+SetEnvIfNoCase User-Agent .*UC Browser.* good_agent
+SetEnvIfNoCase User-Agent .*UC Browser mobile.* good_agent
+SetEnvIfNoCase User-Agent .*Iron.* good_agent
+SetEnvIfNoCase User-Agent .*Iron mobile.* good_agent
+SetEnvIfNoCase User-Agent .*Android browser.* good_agent
+SetEnvIfNoCase User-Agent .*Mozilla.* good_agent
+
+<Limit GET POST HEAD>
+Deny from all
+Allow from env=good_agent
+</Limit>
+
+RewriteCond %{HTTP_USER_AGENT} ^BlackWidow [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Bot\ mailto:craftbot@yahoo.com [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ChinaClaw [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Custo [OR]
+RewriteCond %{HTTP_USER_AGENT} ^DISCo [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Download\ Demon [OR]
+RewriteCond %{HTTP_USER_AGENT} ^eCatch [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EirGrabber [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EmailSiphon [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EmailWolf [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Express\ WebPictures [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ExtractorPro [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EyeNetIE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^FlashGet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GetRight [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GetWeb! [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Go!Zilla [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Go-Ahead-Got-It [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GrabNet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Grafula [OR]
+RewriteCond %{HTTP_USER_AGENT} ^HMView [OR]
+RewriteCond %{HTTP_USER_AGENT} HTTrack [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Stripper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Sucker [OR]
+RewriteCond %{HTTP_USER_AGENT} Indy\ Library [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^InterGET [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Internet\ Ninja [OR]
+RewriteCond %{HTTP_USER_AGENT} ^JetCar [OR]
+RewriteCond %{HTTP_USER_AGENT} ^JOC\ Web\ Spider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^larbin [OR]
+RewriteCond %{HTTP_USER_AGENT} ^LeechFTP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Mass\ Downloader [OR]
+RewriteCond %{HTTP_USER_AGENT} ^MIDown\ tool [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Mister\ PiX [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Navroad [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NearSite [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetAnts [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetSpider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Net\ Vampire [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetZIP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Octopus [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Explorer [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Navigator [OR]
+RewriteCond %{HTTP_USER_AGENT} ^PageGrabber [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Papa\ Foto [OR]
+RewriteCond %{HTTP_USER_AGENT} ^pavuk [OR]
+RewriteCond %{HTTP_USER_AGENT} ^pcBrowser [OR]
+RewriteCond %{HTTP_USER_AGENT} ^RealDownload [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ReGet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SiteSnagger [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SmartDownload [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SuperBot [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SuperHTTP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Surfbot [OR]
+RewriteCond %{HTTP_USER_AGENT} ^tAkeOut [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Teleport\ Pro [OR]
+RewriteCond %{HTTP_USER_AGENT} ^VoidEYE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Image\ Collector [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Sucker [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebAuto [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebCopier [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebFetch [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebGo\ IS [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebLeacher [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebReaper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebSauger [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Website\ eXtractor [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Website\ Quester [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebStripper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebWhacker [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebZIP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Wget [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Widow [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WWWOFFLE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Xaldon\ WebSpider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Zeus
+RewriteRule ^.* - [F,L]
+
+
+
+#SQL Injection Protection --Read More www.cybercrime.gov
+# Block MySQL injections, RFI, base64, etc.
+# a list of regex request blocking that will help block SQL injection.
+# note: This is an added layer of defense, but these are not substitutes for good code practices in general.
+# Please make sure you take all of the precautions in your code as well.
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC,OR]
+RewriteCond %{QUERY_STRING} (\.\./|\.\.) [OR]
+RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+RewriteCond %{QUERY_STRING} http\: [NC,OR]
+RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} ^.*(\[|\]|\(|\)|<|>).* [NC,OR]
+RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
+RewriteCond %{QUERY_STRING} (\./|\../|\.../)+(motd|etc|bin) [NC,OR]
+RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|>|'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
+RewriteCond %{QUERY_STRING} (sp_executesql) [NC]
+RewriteRule ^(.*)$ - [F,L]
