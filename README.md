@@ -10,7 +10,7 @@
 ---
 
 ### Disclaimer
-I’m not a dev but I know enough to come up with a prototype like this one. If there is a dev out there willing to improve it, or to collaborate, [hit me up](mailto:ciao@vanderlanth).
+I’m not a dev but I know enough to come up with a prototype like this one. If there is a dev out there willing to improve it, or to collaborate, [hit me up](mailto:ciao@vanderlanth.io).
 
 ---
 
