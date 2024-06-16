@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en" class="scroll">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Lowwwimpact Tracker</title>
+
+  <meta http-equiv='X-UA-Compatible', content='IE=edge'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- font preload -->
+  <link rel="preload" as="font" href="media/fonts/Satoshi-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+
+  <meta id="schema_name" itemprop="name" content="Lowwwimpact aims to raise awareness about digital pollution and explore solutions for a cleaner and sober web">
+
+  <meta name="title" content="Lowwwimpact Tracker">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- css load-->
+  <link href="./css/dist/video-js.css" rel="stylesheet" />
+  <link href="./css/dist/demo.css?v=202406" rel="stylesheet">
+
+
+  <!-- favicon'n'shit -->
+  <link rel="apple-touch-icon" sizes="180x180" href="media/fav/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="media/fav/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="media/fav/favicon-16x16.png">
+  <link rel="mask-icon" href="media/fav/safari-pinned-tab.svg" color="#151515">
+  <link rel="shortcut icon" href="media/fav/favicon-32x32.png">
+  <meta name="msapplication-TileColor" content="#151515">
+  <meta name="msapplication-config" content="media/fav/browserconfig.xml">
+  <meta name="theme-color" content="#151515">
+
+  <script src="js/dist/lowwwimpact_tracker.js?v=202406"></script>
+
+</head>
+
+<body class="main demo">
+
+<a class="github" href="https://github.com/vanderlanth/lowwwimpact" target="_blank" rel="noopener noreferrer"><img src="media/github.svg" alt="Github"></a>
+
+<header>
+  <h1 class="project_name">Digital Carbon Tracker</h1>
+  <img src="media/logo-stats.svg" alt="logo lowwwimpact.stats">
+</header>
+
+<main>
+  <p>
+    This tool tracks bandwidth usage paired with APIs from <a href="https://www.electricitymaps.com/" target="_blank" rel="noopener noreferrer">Electricity Maps</a> 🔗 and <a href="https://ipinfo.io/" target="_blank" rel="noopener noreferrer">IPinfo</a> 🔗 to estimate the carbon footprint of your website.
+    It is an open source prototype. All the is available on <a href="https://github.com/vanderlanth/lowwwimpact" target="_blank" rel="noopener noreferrer">Github</a> 🔗. Feel free to improve it!
+  </p>
+  <p>
+    Mainly relying on the Javascript Performance API, logs as networks request when the page loads. But order to be more precise, it can also listen to lazy loaded requests which happens after the page load.
+  </p>
+
+  <a href="./lowwwimpact" target="_blank" class="btn">View dashboard</a>
+
+
+  <hr>
+
+
+  <h3>Lazy loaded images</h3>
+  <h4>HTML</h4>
+  <pre>
+    <code>
+    &lt;picture&gt;
+      &lt;source srcset="img.webp"&gt;
+      &lt;img src="img.png" loading="lazy" onload="lowww(this)"&gt;
+    &lt;/picture&gt;</code>
+  </pre>
+  <p>The function <code>onload="lowww(this)"</code> will trigger the tracker. It's important to use width and height attributes as it helps the browser when to load the asset.</p>
+
+  <div class="lazy-demo">
+
+    <picture class="demo-img" name="Demo Image">
+      <source srcset="/media/demo/lazy-imgs/webp/01.webp" width="360" height="360" alt="Demo">
+      <img src="/media/demo/lazy-imgs/jpg/01.jpg" width="360" height="360" alt="Demo" loading="lazy" onload="lowww(this)">
+    </picture>
+  
+    <picture class="demo-img" name="Demo Image">
+      <source srcset="/media/demo/lazy-imgs/webp/02.webp" width="360" height="360" alt="Demo">
+      <img src="/media/demo/lazy-imgs/jpg/02.jpg" width="360" height="360" alt="Demo" loading="lazy" onload="lowww(this)">
+    </picture>
+  
+    <picture class="demo-img" name="Demo Image">
+      <source srcset="/media/demo/lazy-imgs/webp/03.webp" width="360" height="360" alt="Demo">
+      <img src="/media/demo/lazy-imgs/jpg/03.jpg" width="360" height="360" alt="Demo" loading="lazy" onload="lowww(this)">
+    </picture>
+  
+    <picture class="demo-img" name="Demo Image">
+      <source srcset="/media/demo/lazy-imgs/webp/04.webp" width="360" height="360" alt="Demo">
+      <img src="/media/demo/lazy-imgs/jpg/04.jpg" width="360" height="360" alt="Demo" loading="lazy" onload="lowww(this)">
+    </picture>
+  
+    <picture class="demo-img" name="Demo Image">
+      <source srcset="/media/demo/lazy-imgs/webp/05.webp" width="360" height="360" alt="Demo">
+      <img src="/media/demo/lazy-imgs/jpg/05.jpg" width="360" height="360" alt="Demo" loading="lazy" onload="lowww(this)">
+    </picture>
+  
+    <picture class="demo-img" name="Demo Image">
+      <source srcset="/media/demo/lazy-imgs/webp/06.webp" width="360" height="360" alt="Demo">
+      <img src="/media/demo/lazy-imgs/jpg/06.jpg" width="360" height="360" alt="Demo" loading="lazy" onload="lowww(this)">
+    </picture>
+  </div>
+
+
+  <hr>
+
+
+  <h3>HTML5 Video & Audio</h3>
+  <h4>HTML</h4>
+  <pre>
+    <code>
+    &lt;video loop controls webkit-playsinline playsinline preload="none" onplay="lowww(this)"&gt;
+      &lt;source src="720.webm" type="video/webm"&gt;
+      &lt;source src="480.mp4" type="video/mp4"&gt;
+    &lt;/video&gt;
+
+    &lt;audio controls preload="none" onplay="lowww(this)"&gt;
+      &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+    &lt;/audio&gt;</code>
+  </pre>
+  <p>The function <code>onload="lowww(this)"</code> will trigger the tracker, again. To reduce your wbesite impact, you should avoid preloading content whenever you can.</p>
+
+
+  <video controls webkit-playsinline playsinline preload="none" poster="./media/demo/html5-media/poster.jpg" onplay="lowww(this)">
+    <source src="media/demo/html5-media/video.webm" type="video/webm">
+    <source src="media/demo/html5-media/video.mp4" type="video/mp4">
+  </video>
+  <span class="credits">Video credits: <a href="https://pixabay.com/videos/trees-forest-snow-nature-192649/" target="_blank" rel="noopener noreferrer">Agentluca</a></span>
+
+  <audio controls preload="none" onplay="lowww(this)">
+    <source src="media/demo/html5-media/audio.mp3" type="audio/mpeg">
+  </audio>
+  <span class="credits">Music credits: <a href="https://pixabay.com/music/build-up-scenes-science-documentary-169621/" target="_blank" rel="noopener noreferrer">Lexin Music</a></span>
+
+
+  <hr>
+
+
+  <h3>Video.js</h3>
+  <h4>HTML</h4>
+  <pre>
+    <code>
+    &lt;video class="video-js" controls preload="none" width="1280" height="720" data-setup="{}" onplay="lowww(this)""&gt;
+      &lt;source src="720.webm" type="video/webm"&gt;
+      &lt;source src="480.mp4" type="video/mp4"&gt;
+    &lt;/video&gt;</code>
+  </pre>
+  <p>If you use video.js plugin, the tracking would work the same as HTML5 Video.</p>
+
+
+  <video class="video-js" controls preload="none" width="1280" height="720" poster="./media/demo/html5-media/poster.jpg" data-setup="{}" onplay="lowww(this)">
+    <source src="media/demo/html5-media/video.webm" type="video/webm">
+    <source src="media/demo/html5-media/video.mp4" type="video/mp4">
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+    </p>
+  </video>
+  <span class="credits">Video credits: <a href="https://pixabay.com/videos/trees-forest-snow-nature-192649/" target="_blank" rel="noopener noreferrer">Agentluca</a></span>
+
+
+
+  <hr>
+
+
+  <h3>On-demand embedded content · Experimental and not precise</h3>
+  <p>
+    Using the function <code>lowww_custom</code> on click with the attribute <code>data-lowww</code> which should contain a manually estimated kb size, 
+    it is possible to roughly track external content bandwidth usage and impact. The function <code>lowww_custom</code> can load on demand an external content 
+    such as a Youtube video is the example below.
+  </p>
+  <h4>HTML</h4>
+  <pre>
+    <code>
+    &lt;div id="player-container"&gt;
+      &lt;button name="iframe-loading" id="player" data-lowww="25000" onclick="lowww_custom(this)"&gt;Load me&lt;/button&gt;
+    &lt;/div&gt;</code>
+  </pre>
+
+  <h4>Javascript</h4>
+  <pre>
+    <code>
+    function lowww_custom(element) {
+      //Update tracking
+      let estimated_size = Number(element.getAttribute('data-lowww')) * 1000;
+      bytes = bytes + estimated_size;
+      carbon_rating();
+      //console.log(bytes);
+    
+      //Load external content
+      let code = '&lt;iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/hswqVIDA_Kc?si=nvTs1rX3tOblMndC&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen&gt;&lt;/iframe&gt;'
+      '
+      element.parentNode.innerHTML= code
+    }</code>
+  </pre>
+
+  <div id="player-container">
+    <button name="iframe-loading" id="player" data-lowww="25000" onclick="lowww_custom(this)">Load content</button>
+  </div>
+
+
+  <hr>
+
+
+  <h3>Auto-loading embedded content · Experimental and not precise</h3>
+  <p>
+    Recommendation: for a lower impact, avoid loading external content. If you do, then you should avoid to preload it. 
+    This tool is unable to track external requests so if you have to preload external content like a youtube video or a calendly embed 
+    (like in the example below), add the class <code>lowww_auto</code> to the embed with the attribute <code>data-lowww</code> which should contain a manually estimated kb size.
+  </p>
+  <h4>HTML</h4>
+  <pre>
+    <code>
+    &lt;div class="lowww_auto calendly-inline-widget" data-lowww="2500" data-url="https://calendly.com/lowwwimpact"&gt;&lt;/div&gt;
+    &lt;script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async&gt;&lt;/script&gt;</code>
+  </pre>
+
+  <!-- badge, you should add the link to the dashboard, or maybe you have something to hide?-->
+  <div class="lowwwimpact_tracker">
+    <a href="./lowwwimpact" target="_blank" class="lowwwimpact_badge">
+      <span class="lowww_title">Digital Carbon Rating</span>
+      <span class="lowww_ecoscore">A+</span>
+      <span class="lowww_info">i</span>
+    </a>
+    <h6>
+      Visiting this page emitted at least <span class="lowww_co2">0.00</span>gr of CO<sub>2</sub>e.
+    </h6>
+  </div>
+
+</main>
+
+<script src="js/dist/video.min.js" async></script>
+
+</body>
+</html>

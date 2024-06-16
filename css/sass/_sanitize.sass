@@ -1,0 +1,75 @@
+
+*,
+::before,
+::after
+	background-repeat: no-repeat
+	box-sizing: inherit
+
+::before,
+::after
+	text-decoration: inherit
+	vertical-align: inherit
+
+html
+	box-sizing: border-box
+	cursor: default
+	font-family: sans-serif
+	line-height: 140%
+	-ms-text-size-adjust: 100%
+	-webkit-text-size-adjust: 100%
+
+::-moz-selection
+	background-color: #b3d4fc
+	color: #000000
+	text-shadow: none
+
+::selection
+	background-color: #b3d4fc
+	color: #000000
+	text-shadow: none
+
+img,
+svg
+	vertical-align: middle
+
+img
+	border-style: none
+
+svg
+	fill: currentColor
+
+svg:not(:root)
+	overflow: hidden
+
+a
+	background-color: transparent
+	-webkit-text-decoration-skip: objects
+
+a:hover
+	outline-width: 0
+
+::-moz-focus-inner
+	border-style: none
+	padding: 0
+
+[aria-busy="true"]
+	cursor: progress
+
+[aria-controls]
+	cursor: pointer
+
+[aria-disabled]
+	cursor: default
+
+button,
+[tabindex]
+	-ms-touch-action: manipulation
+	touch-action: manipulation
+
+[hidden][aria-hidden="false"]
+	clip: rect(0, 0, 0, 0)
+	display: inherit
+	position: absolute
+
+[hidden][aria-hidden="false"]:focus
+	clip: auto

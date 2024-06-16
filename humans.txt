@@ -1,0 +1,11 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# CREATOR
+
+    Nicolas Lanthemann - Interaction Designer
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5, Vanilla JS,
+    Apache Server Configs, Sustainable Design &Code

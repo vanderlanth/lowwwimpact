@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en" class="lowwwimpact">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Project name · Lowwwimpact Stats</title>
+
+  <meta http-equiv='X-UA-Compatible', content='IE=edge'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- font preload -->
+  <link rel="preload" as="font" href="media/fonts/Satoshi-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+  <meta id="schema_name" itemprop="name" content="Lowwwimpact aims to raise awareness about digital pollution and explore solutions for a cleaner and sober web">
+
+  <meta name="title" content="Project name · Lowwwimpact Stats">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- css load-->
+  <link href="./css/dist/lowwwimpact.css?v=202406" rel="stylesheet">
+
+  <!-- favicon'n'shit -->
+  <link rel="apple-touch-icon" sizes="180x180" href="media/fav/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="media/fav/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="media/fav/favicon-16x16.png">
+  <!-- <link rel="manifest" href="media/fav/site.webmanifest"> -->
+  <link rel="mask-icon" href="media/fav/safari-pinned-tab.svg" color="#151515">
+  <link rel="shortcut icon" href="media/fav/favicon-32x32.png">
+  <meta name="msapplication-TileColor" content="#151515">
+  <meta name="msapplication-config" content="media/fav/browserconfig.xml">
+  <meta name="theme-color" content="#151515">
+
+</head>
+
+<body>
+
+  <div class="lowwwimpact_banner refresh active">Loading data <span>⏳</span></div>
+  <div class="lowwwimpact_banner success">Data refreshed successfully ✅</div>
+
+  <a class="github" href="https://github.com/vanderlanth/lowwwimpact" target="_blank" rel="noopener noreferrer"><img src="media/github.svg" alt="Github"></a>
+
+  <header>
+    <h1 class="project_name">Project title</h1>
+    <img src="media/logo-stats.svg" alt="logo lowwwimpact.stats">
+  </header>
+
+  <main class="loading">
+    <div class="options">
+      <div class="time_selector" onchange="timeselect(this)">
+        <input type="radio" name="time" id="alltime" hidden/>
+        <label for="alltime">All time</label>  
+        
+        <input type="radio" name="time" id="year" hidden/>
+        <label for="year">Year</label> 
+        
+        <input type="radio" name="time" id="month" checked hidden/>
+        <label for="month">Month</label> 
+      </div>
+
+      <div class="period_selectors">
+        <label for="year-selector">Select Year</label>
+        <select name="year-selector" class="" id="year-selector" onchange="updateMonthsAvailable(this)">
+          <option value="empty">Select year</option>
+        </select>
+        
+        <label for="month-selector">Select Month</label>
+        <select name="month-selector" class="" id="month-selector" onchange="removeEmptyMonth()">
+          <option value="empty">Select month</option>
+          <option data-month='1' value="January">January</option>
+          <option data-month='2' value="February">February</option>
+          <option data-month='3' value="March">March</option>
+          <option data-month='4' value="April">April</option>
+          <option data-month='5' value="May">May</option>
+          <option data-month='6' value="June">June</option>
+          <option data-month='7' value="July">July</option>
+          <option data-month='8' value="August">August</option>
+          <option data-month='9' value="September">September</option>
+          <option data-month='10' value="October">October</option>
+          <option data-month='11' value="November">November</option>
+          <option data-month='12' value="December">December</option>
+        </select>
+      </div>
+      <button class="apply hidden" name="apply" onclick="load_logs()">Apply 🔄</button>
+    </div>  
+
+    <div class="main_stats">
+      <div class="main_stats--block block_visits">
+        <span>👀</span>
+        <h4>Page Views</h4>
+        <span class="data">
+          <h3 class="value">00'000</h3>
+        </span>
+      </div>
+
+      <div class="main_stats--block block_bandwidth">
+        <span>💽</span>
+        <h4>Bandwidth Usage</h4>
+        <span class="data">
+          <h3 class="value">0.000</h3><h3 class="unit">gb</h3>
+        </span>
+      </div>
+  
+      <div class="main_stats--block block_energy">
+        <span>🔌</span>
+        <h4>Energy Usage</h4>
+        <span class="data">
+          <h3 class="value">0.00</h3><h3 class="unit">kWh</h3>
+        </span>
+      </div>
+
+      <div class="main_stats--block block_co2">
+        <span>☁️</span>
+        <h4>Carbon Footprint <em>(CO<sub>2</sub>e)</em></h4>
+        <span class="data">
+          <h3 class="value">0.00</h3><h3 class="unit">gr</h3>
+        </span>
+      </div>
+
+      <div class="main_stats--block block_mix">
+        <span>⚡️</span>
+        <h4> Grid Carbon Intensity <em>(CO<sub>2</sub>e/kWh)</em></h4>
+        <span class="data">
+          <h3 class="value">00.0</h3><h3 class="unit">gr</h3>
+        </span>
+      </div>
+    </div>
+
+    <div class="monitored_graph">
+      <h3>Estimated operational emissions</h3>
+      <div class="graphic">
+        <div class="graphic-heading">
+          <h4>CO<sub>2</sub>e <span class="co2-unit">(gr)</span></h4>
+          <h4>Bandwidth <span class="bandwidth-unit">(mb)</span></h4>
+        </div>
+        <div class="col-sticky">
+          <div class="row">
+            <span class="row-co2">0</span>
+            <span class="row-bandwidth">0</span>
+          </div>
+          <div class="row">
+            <span class="row-co2">0</span>
+            <span class="row-bandwidth">0</span>
+          </div>
+          <div class="row">
+            <span class="row-co2">0</span>
+            <span class="row-bandwidth">0</span>
+          </div>
+          <div class="row">
+            <span class="row-co2">0</span>
+            <span class="row-bandwidth">0</span>
+          </div>
+          <div class="col-item-number">Day</div>
+          <div class="col-item-visits">Visits</div>
+        </div>
+        <div class="data-container">
+          <div class="graphic-data">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <section class="secondary-elements">
+      
+      <div class="distribution">
+        <h3>CO<sub>2</sub>e emission distribution</h3>
+        <ul>  </ul>
+      </div>
+
+      <div class="equivalences">
+        <h3>Weight equivalences of <span class="equiv_weight">0.00</span><span class="equiv_unit">gr</span></h3>
+        <ul>
+          <li class="equiv_tree">
+            <span>🌳</span>
+            <span class="sentence">Loading</span>
+          </li>
+          <li class="equiv_car">
+            <span>⛽️</span>
+            <span class="sentence">Loading</span>
+          </li>
+          <li class="equiv_evbike">
+            <span>🚲</span>
+            <span class="sentence">Loading</span>
+          </li>
+          <li class="equiv_bees">
+            <span>🐝</span>
+            <span class="sentence">Loading</span>
+          </li>
+        </ul>
+      </div>
+    
+    </section>
+
+    <div class="useful_info">
+      <div class="accordion" onclick="toggleAccordion(this, event)">
+        <h4>How does it work?</h4>
+        <span class="accordion-content">
+          <p>This open source tool uses free APIs from <a href="https://ipinfo.io/" target="_blank">ipinfo.io</a> and <a href="https://www.electricitymaps.com/" target="_blank">electricitymaps.com</a> 
+            to estimate the carbon footprint of website coupled with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance" target="_blank">Performance API</a>.
+          </p> 
+        </span>
+        
+      </div>
+      <div class="accordion" onclick="toggleAccordion(this, event)">
+        <h4>Known limitations</h4>
+        <span class="accordion-content">
+          <ul>
+            <li>Embedding content such as CDN-Served images, Youtube videos or a Calendly will not work consistently.</li>
+            <li>Audio and video content might are sometimes delayed in the tracking depending on the browser/device/hosting services.</li>
+            <li>If the APIs do not manage to retrieve the necessary variables (Country Code and Energy Mix) to measure the impact of a session, then <a href="https://sustainablewebdesign.org/calculating-digital-emissions/" target="_blank">default values</a> are applied.</li>
+            <li>There is not yet a strong consensus on how much energy use a gigabyte of data, depending on the model used it can vary from 1.8 kWh/gb to 0.06 kWh/gb. For this prototype, this is value is equal to 0.194 kWh/gb according to the Sustainable Web Design V3 model for operationnal emissions. <a href="https://www.wholegraindigital.com/blog/website-energy-consumption/" target="_blank">Learn more about internet energy consumption.</a></li>
+          </ul>
+        </span>
+        
+      </div>
+      <div class="accordion" onclick="toggleAccordion(this, event)">
+        <h4>Sustainable web quick wins</h4>
+        <span class="accordion-content">
+          <ul>
+            <li>Use a <a href="https://www.thegreenwebfoundation.org/" target="_blank">hosting service running on green energy</a></li>
+            <li>Compress your assets.</li>
+            <li>Lazy load content when you can. Do not pre-load service (calendly, youtube, ...): it should not load unless requested if not requested by the user.</li>
+            <li>Reduce the number of pages, contents and assets. Go to the essential.</li>
+            <li>Check out <a href="https://vanderlanthio.notion.site/Sustainable-Web-Checklist-32d3d3a626534c58bf99ca04b2573f73?pvs=4" target="_blank">Lowwwimpact sustainable web checklist</a> to go further</li>
+          </ul>
+        </span>
+
+      </div>
+      <div class="accordion" onclick="toggleAccordion(this, event)">
+        <h4>Is this tool useful?</h4>
+        <span class="accordion-content">
+          <p>If you aim to simply get know you site impact, calculators such as <a href="https://www.websitecarbon.com/" target="_blank">websitecarbon.com</a> are sufficient for this usage.
+            Analytics tools use energy and store data. If you are not aiming to use it to improve it or to reduce and offset the incompressible emission of your website, then maybe this tool is not made for you.
+          </p>
+        </span>
+      </div>
+      <div class="accordion" onclick="toggleAccordion(this, event)">
+        <h4>Contribute to this project</h4>
+        <span class="accordion-content">
+          <p>Lowwwimpact is a solo-project by <a href="https://vanderlanth.io">Nicolas Lanthemann</a> during his free time. The code of this tool is accessible on Github, 
+            alongside a list of ideas to improve it. 
+            <br>
+            <br>
+            This analytic tool is free. However, if it is beneficial for a commercial project of yours, I'd greatly appreciate if you consider supporting this lowwwimpact. If my work has helped you profit, 
+            then I believe it's reasonable to ask for a token of appreciation in return, don't you agree?
+            <br>
+            <br>
+            <a href="https://buymeacoffee.com/lowwwimpact" target="_blank">Support Open Source ☕️</a>
+          </p>
+        </span>
+      </div>
+    </div>
+
+    <footer>
+      <a href="https://www.linkedin.com/company/lowwwimpact/" target="_blank">Follow Lowwwimpact 🫰</a>
+      <a href="https://buymeacoffee.com/lowwwimpact" target="_blank">Support Open Source ☕️</a>
+      <button class="refresh_data" name="Refresh data" onclick="refresh_data()">Refresh data 🔄</button>
+    </footer>
+
+  </main>
+
+  <template class="template_url">
+    <li class="url-item">
+      <a target="_blank" href="">/something</a>
+      <div class="url-item_data">
+        <span class="visits">0'000</span> visits · <span class="total_kg">00</span><span class="page_share_unit">gr</span> of CO<sub>2</sub>e (<span class="view_gr">0.00</span>gr per view)
+      </div>
+    </li>
+  </template>
+
+  <template class="template_day">
+    <div class="col-item" onmouseenter="colhover(this)">
+      <div class="col-item-graphic">
+        <span class="col-item-graphic-co2"></span>
+        <span class="col-item-graphic-bandwidth"></span>
+      </div>
+      <div class="col-item-number"></div>
+      <div class="col-item-visits"></div>
+    </div>
+  </template>
+
+  <script src="js/dist/lowwwimpact_dashboard.js?v=202406"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+@import '_sanitize', '_variables', '_fonts'
+::root
+  background-color: $bg
+  color: $white
+::-webkit-scrollbar
+  display: none
+  width: 0px
+  background: transparent
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar
+  width: 0px
+  background: transparent
+
+html, body, h1, h2, h3, h4, h5, h6, p, ul, li, a, button, section, main, aside
+  margin: 0
+  padding: 0
+  position: relative
+  box-sizing: border-box
+
+html
+  font-size: 100%
+  width: 100vw
+  overflow-x: hidden
+  scrollbar-width: none
+  background-color: $bg
+  color: $white
+  &::-webkit-scrollbar
+    display: none
+  @media #{$query-wide-screen}
+    font-size: calc(8px + (20 - 8)*(100vw - 320px)/(1920 - 320))
+
+.demo
+  font-size: 1rem
+  padding: 1rem 1rem 10rem 1rem
+  margin: 0 auto
+  min-width: 375px
+  max-width: 860px
+  a
+    color: coral
+  p, caption
+    display: block
+    font-size: 1.25rem
+    margin-bottom: 1rem
+  hr
+    opacity: .25
+    margin: 5rem 0
+  h3
+    font-size: 1.5rem
+    margin-bottom: 1rem
+  h4
+    font-size: 1.25rem
+    margin-bottom: 1rem
+    font-weight: 900 !important
+    margin-top: 2.5rem
+  @media only screen and (max-width: 720px)
+    font-size: 1rem
+
+.demo header
+  margin: 8rem auto 6.5rem auto
+  text-align: left
+  h1
+    font-size: 2.25rem
+  img
+    height: 2.25rem
+    margin-top: .5rem
+    width: auto
+  @media only screen and (max-width: 720px)
+    h1
+      font-size: 1.75rem
+    img
+      height: 1.75rem
+
+.lazy-demo
+  display: flex
+  width: 100%
+  flex-flow: row wrap
+  justify-content: space-between
+  align-content: space-between
+  align-items: space-between
+  padding-top: 2rem
+  .demo-img
+    overflow: hidden
+    width: calc(50% - 0.5rem) !important
+    aspect-ratio: 1/1 !important
+    margin-bottom: 1rem
+    img, source
+      border-radius: 0.5rem
+      width: 100% !important
+      height: 100% !important
+      aspect-ratio: 1/1 !important
+
+video, .video-js
+  aspect-ratio: 16/9
+  width: 100%
+  height: auto !important
+  border-radius: 0.5rem
+  overflow: hidden
+  margin-top: 1rem
+
+pre
+  border-radius: 0.25rem
+  background: $containers
+  overflow: scroll
+  width: 100%
+  margin-bottom: 2rem
+  code
+    font-family: monospace
+
+p code
+  font-size: 95%
+  color: aquamarine
+  background: rgba(aquamarine, 0.1)
+  border-radius: 0.5rem
+  padding: 0.2rem
+
+.credits
+  padding-top: 0.5rem
+  width: 100%
+  text-align: center
+  display: block
+
+audio
+  display: block
+  margin: 5rem 0 1rem 0
+  width: 100%
+
+#player-container
+  width: 100%
+  aspect-ratio: 16/9
+  display: block
+  background: $containers
+  border-radius: 0.5rem
+  overflow: hidden
+  display: flex
+  button
+    margin: auto
+    background: coral
+    font-size: 1.5rem
+    padding: 0.5rem 1.5rem
+    border-radius: 2rem
+    border: none
+    cursor: pointer
+  iframe
+    width: 100%
+    height: 100%
+
+.github
+  position: fixed
+  right: 1rem
+  top: 1rem
+  width: 2rem
+  opacity: .5
+  &:hover
+    opacity: 1
+  img
+    position: relative
+    width: 100%
+
+a.btn
+  display: inline-block
+  text-decoration: none
+  color: white
+  background: coral
+  padding: 0.5rem 1rem
+  border-radius: 4rem
+  font-size: 1.25rem
+  margin-top: 1rem
+
+//badge ==================================
+
+.lowwwimpact_tracker
+  position: fixed
+  bottom: 2rem
+  left: 2rem
+  h6
+    padding-left: 0.75rem
+    font-size: 0.875rem
+
+.lowwwimpact_badge
+  background: #dedede
+  text-decoration: none
+  display: flex
+  line-height: 100%
+  border-radius: 2rem
+  height: 2.25rem
+  margin-bottom: 0.5rem
+  width: fit-content
+  transition: .225s ease background
+  &:hover
+    background: #fff
+  span
+    padding: 0.45rem 0rem 0.35rem 0rem
+    color: $bg
+  .lowww_info
+    background: #ccc
+    border-radius: 2rem
+    width: 2.25rem
+    text-align: center
+  .lowww_ecoscore
+    padding-left: 0.5rem
+    padding-right: 0.5rem
+  .lowww_title
+    padding-left: 1rem

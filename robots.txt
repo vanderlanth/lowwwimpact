@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /lowwwimpact_stats/
+Disallow: /cgi-bin/
+
+Sitemap: https://stats.lowwwimpact.com/sitemap.xml

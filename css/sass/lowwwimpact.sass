@@ -1,0 +1,592 @@
+@import '_sanitize', '_variables', '_fonts'
+::root
+  background-color: $bg
+  color: $white
+::-webkit-scrollbar
+  display: none
+  width: 0px
+  background: transparent
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar
+  width: 0px
+  background: transparent
+
+html, body, h1, h2, h3, h4, h5, h6, p, ul, li, a, button, section, main, aside
+  margin: 0
+  padding: 0
+  position: relative
+  box-sizing: border-box
+
+html
+  font-size: 100%
+  width: 100vw
+  scrollbar-width: none
+  &::-webkit-scrollbar
+    display: none
+  @media #{$query-wide-screen}
+    font-size: calc(8px + (20 - 8)*(100vw - 320px)/(1920 - 320))
+
+.lowwwimpact body
+  background-color: $bg
+  color: $white
+  min-height: -webkit-fill-available
+  width: calc(100vw - 10%)
+  max-width: 1920px
+  margin: 0 auto
+  position: relative
+  main, footer, .options
+    margin: 0 auto
+    width: 100%
+
+.lowwwimpact header
+  margin: 8rem auto 6.5rem auto
+  text-align: center
+  h1
+    font-size: 2.5rem
+  img
+    height: 2.5rem
+    margin-top: .5rem
+    width: auto
+  @media only screen and (max-width: 720px)
+    h1
+      font-size: 1.75rem
+    img
+      height: 1.75rem
+
+.lowwwimpact .options
+  display: flex
+  flex-flow: row wrap
+  justify-content: flex-start
+  align-items: center
+  padding-bottom: 1rem
+  select
+    border: none
+    background: #0B0D14
+    border-radius: 0.5rem
+    width: 8.5rem
+    margin-left: 1rem
+    margin-right: 1rem
+    font-size: 1rem
+    padding: 0.75rem
+    box-shadow: 1rem 0 0 #0B0D14
+    cursor: pointer
+    outline: none
+    &.hide
+      display: none
+  .apply
+    text-decoration: none
+    appearance: none
+    background: #49537a
+    border-radius: 0.5rem
+    font-size: 1rem
+    border: none
+    outline: none
+    display: inline-block
+    padding: 1rem
+    margin: 0 0 0 1.25rem
+    line-height: 80%
+    font-size: 1rem
+    transition: $bezier .225s
+    transition-property: color, background
+    cursor: pointer
+    &.hidden
+      display: none
+    &:disabled
+      color: #6a708b
+      background: rgba(#49537a, 0.5)
+      pointer-events: none
+    &:hover
+      color: #0B0D14
+      background: $white
+  .period_selectors
+    label
+      display: none
+  .time_selector
+    display: inline-block
+    margin: 0
+    font-size: 0
+    background: #0B0D14
+    border-radius: 0.5rem
+    cursor: pointer
+    label
+      position: relative
+      cursor: pointer
+      font-size: 1rem
+      display: inline-block
+      width: 5rem
+      padding: 0.75rem 0.25rem
+      transition: all 0.3s ease
+      z-index: 1
+      color: #767676
+      text-align: center
+      &:hover
+        color: $white
+    #month + label:before
+      content: ""
+      width: calc(100% - 6px)
+      height: calc(100% - 6px)
+      position: absolute
+      top: 3px
+      left: -200%
+      z-index: -1
+      background-color: #eee
+      transition: all 0.225s ease
+      border-radius: calc(0.5rem - 3px)
+    #alltime:checked ~ label[for="month"]:before
+      left: calc(-200% + 3px)
+    #year:checked ~ label[for="month"]:before
+      left: calc(-100% + 3px)
+    #month:checked ~ label[for="month"]:before
+      left: calc(0% + 3px)
+    #alltime:checked + label, #year:checked + label, #month:checked + label
+      color: #131722
+      z-index: 99
+  @media only screen and (max-width: 720px)
+    flex-flow: column wrap
+    align-items: flex-start
+    .period_selectors
+      display: block
+    select
+      margin: 1rem 1.75rem 0 0
+    .apply
+      margin-left: 0
+      margin-top: 1rem
+
+.lowwwimpact .main_stats
+  background: #0B0D14
+  border-radius: 0.5rem
+  padding: 2.5rem 1.25rem
+  display: flex
+  flex-flow: row wrap
+  justify-content: center
+  &--block
+    display: flex
+    flex-flow: column wrap
+    justify-content: center
+    text-align: center
+    flex-grow: 1
+    border-right: 1px solid rgba($white, .1)
+    padding: 0 1rem
+    box-sizing: border-box
+    &:last-of-type
+      border-right: none
+    h4
+      font-size: 0.875rem
+      opacity: .75
+      em
+        font-style: normal
+        opacity: .83
+    .data
+      margin-top: 1rem
+      font-size: 1.75rem
+      .unit
+        opacity: .66
+      *
+        display: inline
+        margin: 0
+        padding: 0
+    h3
+      font-size: 1.75rem
+  @media #{$query-desktop-break}
+    padding: 0.5rem 1.25rem
+    .main_stats--block
+      border-right: none
+      padding: 1rem
+      h3
+        font-size: 1.25rem
+      .data
+        margin-top: 0rem
+  @media #{$query-mobile-break}
+    flex-flow: column wrap
+
+.lowwwimpact .monitored_graph
+  padding: 2rem 0 2rem 2rem
+  background: #0B0D14
+  border-radius: 0.5rem
+  margin-top: 1.25rem
+  position: relative
+  &::before
+    content: ''
+    position: absolute
+    top: 1rem
+    right: 0
+    height: calc( 100% - 2rem )
+    width: 2rem
+    display: block
+    background: #0B0D14
+    z-index: 999
+  &::after
+    content: ''
+    position: absolute
+    top: 1rem
+    right: 0
+    height: calc( 100% - 2rem )
+    width: 4rem
+    display: block
+    background: linear-gradient(90deg, rgba(#0B0D14, 0) 0%, rgba(#0B0D14, 1) 100%)
+  h3
+    font-size: 1.5rem
+    margin-bottom: 1.5rem
+    @media #{$query-tablet-break}
+      font-size: 1.25rem
+  .graphic-heading
+    font-size: 1.125rem
+    margin-bottom: 2.5rem
+    h4:first-of-type, h4:first-of-type sub
+      color: #007AFF
+    h4:last-of-type
+      color: #FDAD15
+    span
+      opacity: .5
+  .graphic
+    overflow: hidden
+    position: relative
+  .data-container
+    overflow: scroll
+    padding-right: 2rem
+    position: relative
+    padding-left: 6rem
+    padding-top: 4rem
+    margin-top: -3rem
+  .col-sticky
+    width: 6rem
+    border-right: 1px solid rgba(white, 0.1)
+    border-bottom: 1px solid rgba(white, 0.1)    
+    position: absolute  
+    bottom: 0
+    left: 0
+    background: #0B0D14
+    z-index: 99
+    .row
+      display: flex
+      flex-flow: column wrap
+      font-size: 0.75rem
+      height: 4rem
+      border-top: 1px solid rgba(white, 0.1)
+      position: relative
+      background: #0B0D14
+      z-index: 99
+      &::after
+        content: ''
+        position: absolute
+        left: 100%
+        top: -1px
+        width: 100vw
+        height: 1px
+        background: rgba(white, 0.1)
+      &-co2
+        color: #007AFF
+        transform: translateY(-100%)
+      &-bandwidth
+        color: #FDAD15
+        transform: translateY(-100%)
+    .col-item-number, .col-item-visits
+      height: 4rem
+      border-top: 1px solid rgba(white, 0.1)
+      display: flex
+      align-items: center
+
+  .graphic-data
+    display: flex
+    flex-flow: row nowrap
+    align-items: flex-end
+    width: max-content
+    position: relative
+    height: 24rem
+    .col-item-number, .col-item-visits
+      height: 4rem
+      border-top: 1px solid rgba(white, 0.1)
+      display: flex
+      align-items: center
+    .col-item
+      border-bottom: 1px solid rgba(white, 0.1)
+      width: 6rem
+      display: flex
+      flex-flow: column wrap
+      position: relative
+      &:hover
+        background: $bg
+        &::after
+          content: attr(data-hover)
+          position: absolute
+          white-space: break-spaces
+          text-align: center
+          top: -3rem
+          font-size: 0.875rem
+          left: -100%
+          width: 300%
+        .col-item-graphic-co2
+          &:after
+            box-shadow: -0.25rem 0rem 1rem rgba(#007AFF, 0.33)
+        .col-item-graphic-bandwidth
+          &:after
+            box-shadow: .25rem 0rem 1rem rgba(#FDAD15, 0.33)
+
+
+      .col-item-visits, .col-item-number
+        width: 100%
+        display: grid
+        text-align: center
+        border-right: 1px solid rgba(white, 0.1)
+      &-graphic
+        display: block
+        width: 100%
+        height: 16rem
+        position: relative
+        overflow: hidden
+        *
+          position: absolute
+          bottom: 0
+          left: 50%
+          height: 100%
+          width: 1.5rem
+          display: block
+          border-radius: .125rem
+        &-co2
+          background: linear-gradient(0deg,rgba(#007AFF, 0.5) 0%, rgba(#007AFF, 0.6) 100%)
+          transform: translateX(-100%)
+          &::after
+            border-radius: .125rem .125rem 0 0
+            content: ''
+            position: absolute
+            height: 16rem
+            top: 100%
+            left: 0
+            width: 100%
+            background: linear-gradient(0deg,rgba(#007AFF, 0.2) 0%, rgba(#007AFF, 0.9) 100%)
+        &-bandwidth
+          background: linear-gradient(0deg,rgba(#FDAD15, 0.5) 0%, rgba(#FDAD15, 0.6) 100%)
+          &::after
+            border-radius: .125rem .125rem 0 0
+            content: ''
+            position: absolute
+            height: 16rem
+            top: 100%
+            left: 0
+            width: 100%
+            background: linear-gradient(0deg,rgba(#FDAD15, 0.2) 0%, rgba(#FDAD15, 0.9) 100%)
+
+.lowwwimpact 
+  ul, li
+    padding: 0
+    list-style: none
+  .distribution, .equivalences
+    padding: 1.5rem 2rem 2rem 2rem
+    background: #0B0D14
+    border-radius: 0.5rem
+    margin-top: 1.25rem
+    width: calc(50% - 0.75rem)
+    h3
+      font-size: 1.5rem
+      line-height: 100%
+      padding-bottom: 1.25rem
+      border-bottom: 1px solid rgba($white, .1)
+    
+.lowwwimpact .secondary-elements
+  display: flex
+  justify-content: space-between
+  @media #{$query-desktop-break}
+    flex-flow: column wrap
+    *
+      width: 100%
+  @media #{$query-tablet-break}
+    h3
+      font-size: 1.25rem
+
+.lowwwimpact .equivalences
+  ul 
+    padding-top: 0.5rem
+    li
+      padding-top: 1rem
+      font-size: 1.25rem
+      @media #{$query-tablet-break}
+        font-size: 1rem
+        span
+          font-size: 1rem
+
+.lowwwimpact .distribution
+  .url-item
+    margin-top: 1rem
+    &:first-of-type
+      margin-top: 2rem
+    a
+      text-decoration: none
+      background: rgba(white, 0.15)
+      padding: 0.125rem 0.25rem
+      border-radius: 0.125rem
+      display: inline-block
+      width: fit-content
+      margin-bottom: 0.25rem
+      transition: .225s ease background
+      &:hover
+        background: rgba(white, 0.35)
+      &[href="Rest of website"]
+        pointer-events: none
+        cursor: inherit
+
+.lowwwimpact footer
+  padding: 7rem 0
+  *
+    text-decoration: none
+    appearance: none
+    background: #0B0D14
+    border-radius: 0.5rem
+    font-size: 1rem
+    border: none
+    outline: none
+    display: inline-block
+    padding: 0.75rem
+    margin: 0 .5rem 0 0
+    line-height: 100%
+    font-size: 1rem
+    transition: $bezier .225s
+    transition-property: color, background
+    cursor: pointer
+    &:hover
+      color: #0B0D14
+      background: $white
+  @media #{$query-tablet-break}
+    *
+      margin-bottom: 1rem
+
+.lowwwimpact .useful_info
+  margin-top: 7rem
+  .accordion
+    border-bottom: 1px solid rgba($white, 0.1)
+    padding: 1.5rem 0 1.5rem 5.75rem
+    position: relative
+    cursor: pointer
+    overflow: hidden
+    height: 5rem
+    transition: .5s ease height
+    @media #{$query-tablet-break}
+      padding: 1.25rem 0 1.25rem 4.5rem
+      height: 4rem
+    &:first-of-type
+      border-top: 1px solid rgba($white, 0.1)   
+    &::before
+      content: '+'
+      position: absolute
+      top: 1.75rem
+      left: 1.5rem
+      font-size: 1.25rem
+      opacity: .5
+      transition: .225s ease all
+      @media #{$query-tablet-break}
+        top: 1.25rem
+        left: 1rem
+    &::after
+      content: ''
+      position: absolute
+      top: 0rem
+      left: 4rem
+      width: 1px 
+      height: 100%
+      background: rgba($white, .1)
+      @media #{$query-tablet-break}
+        left: 3rem
+    &:hover:before
+      opacity: 1
+      transform: rotate(90deg)
+    &.open
+      &:before
+        transform: rotate(45deg)
+      &:hover::before
+        transform: rotate(135deg)
+    h4
+      font-size: 1.25rem
+      padding-bottom: 1.5rem
+      @media #{$query-tablet-break}
+        font-size: 1rem
+        padding-bottom: 1.25rem
+    p, ul
+      max-width: 70%
+      cursor: default
+      @media #{$query-desktop-break}
+        max-width: 95%
+      li
+        list-style: circle
+        padding: 0 0 1rem 0.25rem
+        margin-left: 1rem
+          
+    &-content
+      height: auto
+      cursor: default
+      a
+        opacity: .75
+        text-decoration: underline dotted rgba($white, .33)
+        transition: .225s ease all
+        &:hover
+          opacity: 1
+
+.lowwwimpact_banner
+  position: fixed
+  z-index: 9999
+  top: 0
+  left: 0
+  background: #616781
+  width: 100%
+  padding: 1rem
+  text-align: center
+  transition: .225s ease transform
+  transform: translateY(-100%)
+  &::before
+    content: ''
+    position: absolute
+    bottom: 0
+    left: 0
+    height: 1px
+    background: white
+    width: 100%
+    transform: scaleX(0)
+    transform-origin: 0 0
+    transition: .225s .225s ease transform
+  &.success
+    &.active
+      transition-duration: 0s
+  &.refresh
+    transform: translateY(-100%)
+    z-index: 9998
+    &::before
+      display: none
+    span
+      position: relative
+      display: inline-block
+      animation: rotate 1.8s ease-in-out infinite
+  &.active
+    transform: translateY(0%)
+    &::before
+      transition: 4s ease transform
+      transform: scaleX(1)
+      
+@keyframes rotate
+  0%
+    transform: rotate(0deg)
+  60%
+    transform: rotate(360deg)
+  100%
+    transform: rotate(360deg)
+
+@keyframes loading
+  0%
+    opacity: 1
+  50%
+    opacity: .5
+  100%
+    opacity: 1
+
+.lowwwimpact main.loading
+  animation: loading 1s ease-in-out infinite
+
+.github
+  position: fixed
+  right: 1rem
+  top: 1rem
+  width: 2rem
+  opacity: .5
+  &:hover
+    opacity: 1
+  img
+    position: relative
+    width: 100%
