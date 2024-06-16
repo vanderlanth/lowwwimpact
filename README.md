@@ -7,8 +7,12 @@
 🔗 [Tracker](https://stats.lowwwimpact.com/)
 🔗 [Dashboard](https://stats.lowwwimpact.com/lowwwimpact)
 
+---
+
 ### Disclaimer
 I’m not a dev but I know enough to come up with a prototype like this one. If there is a dev out there willing to improve it, or to collaborate, [hit me up](mailto:ciao@vanderlanth).
+
+---
 
 ### How it works
 This tool relies on 3 API’s:
@@ -20,8 +24,12 @@ Then using the same methodology proposed by the SWD it is possible to estimate t
 
 Although the code is not the best you will ever see (cf. disclaimer up top) I tried limit the amount of computations using by caching data on the local storage and directly on the server
 
+---
+
 ### Is it this code safe ?
 Within the limits of my knowledge I tried to make it safe. The data send to the server is always sanitized and escaped.  Please ensure that you have a secure server installation (with DDOS protection) if you intend to use it. I do not take any responsibility in case of trouble.
+
+---
 
 ### Setup
 1. Get an API key from [IPinfo](https://ipinfo.io/) which you will put in the file **lowwimpact_stats/ipinfo.php**
@@ -48,6 +56,8 @@ The function  ``onload="lowww(this)"``  will trigger the tracker. It's importa
     </picture>
 ```
 
+---
+
 ### HTML5 Video & Audio
 Like for the lazy images, the function ``onload="lowww(this)"`` will trigger the tracker. To reduce your wbesite impact, you should avoid preloading content whenever you can.
 
@@ -62,6 +72,8 @@ Like for the lazy images, the function ``onload="lowww(this)"`` will trigger the
     </audio>
 ```
 
+---
+
 ### Video.js
 If you use video.js plugin, the tracking would work the same as HTML5 Video.
 
@@ -71,6 +83,8 @@ If you use video.js plugin, the tracking would work the same as HTML5 Video.
       <source src="480.mp4" type="video/mp4">
     </video>
 ```
+
+---
 
 ### On-demand embedded content · Experimental and not precise
 Using the function ``lowww_custom`` on click with the attribute ``data-lowww`` which should contain a manually estimated kb size, it is possible to roughly track external content bandwidth usage and impact. The function ``lowww_custom`` can load on demand an external content such as a Youtube video is the example below.
@@ -97,6 +111,8 @@ In **lowwwimpact_stats/lowwwimpact_tracker.js**
     }
 ```
 
+---
+
 ### Auto-loading embedded content · Experimental and not precise
 Recommendation: for a lower impact, avoid loading external content. If you do, then you should avoid to preload it. This tool is unable to track external requests so if you have to preload external content like a youtube video or a calendly embed (like in the example below), add the class ``lowww_auto`` to the embed with the attribute ``data-lowww`` which should contain a manually estimated kb size.
 
@@ -105,14 +121,20 @@ Recommendation: for a lower impact, avoid loading external content. If you do, t
     <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
 ```
 
+---
+
 ### Known limitations
 - Embedding content such as CDN-Served images, Youtube videos or a Calendly will not work consistently.
 - Audio and video content might are sometimes delayed in the tracking depending on the browser/device/hosting services.
 - If the APIs do not manage to retrieve the necessary variables (Country Code and Energy Mix) to measure the impact of a session, then default values are applied.
 - There is not yet a strong consensus on how much energy use a gigabyte of data, depending on the model used it can vary from 1.8 kWh/gb to 0.06 kWh/gb. For this prototype, this is value is equal to 0.194 kWh/gb according to the Sustainable Web Design [V3 model for operationnal emissions](https://sustainablewebdesign.org/estimating-digital-emissions/). Here’s another article if you want to learn more aout [internet energy consumption](https://www.wholegraindigital.com/blog/website-energy-consumption/) and digital footprint calculators limitations.
 
+---
+
 ### Should you use it ? 
 If you aim to simply get know you site impact, calculators such as websitecarbon.com are sufficient for this usage. Analytics tools use energy and store data more than necessary. If you are not aiming to use it to improve it or to reduce and offset the incompressible emission of your website, then maybe this tool is not made for you as to track your website sustainability progression.
+
+---
 
 ### Ideas to make it better
 - Graphic responsiveness.
@@ -121,6 +143,8 @@ If you aim to simply get know you site impact, calculators such as websitecarbon
 - Make a visual graphic for the pages impact distribution
 - Include the embodied emissions with visualisations of the different segments.
 - Make a version which does not require prepros.app to work.
+
+---
 
 ### Support open-source
 Lowwwimpact is a solo-project by Nicolas Lanthemann during his free time. The code of this tool is accessible on Github, alongside a list of ideas to improve it.
